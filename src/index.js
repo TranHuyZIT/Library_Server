@@ -23,7 +23,9 @@ app.use("/v1/users", userRoute);
 app.use("/v1/books", bookRoute);
 app.use("/v1/orders", orderRoute);
 
-app.listen(5000, () => {
-  console.log("Server listen on port", 5000);
+const PORT = process.env.PORT || 5000;
+
+app.listen(PORT, () => {
+  console.log("Server listen on port", PORT);
 });
 module.exports = app;
