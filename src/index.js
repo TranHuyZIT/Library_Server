@@ -25,6 +25,7 @@ app.use(
 var corsOptions = {
   origin: "*",
   optionsSuccessStatus: 200,
+  credentials: true,
 };
 app.use(cors(corsOptions));
 app.use(cookieParser());
