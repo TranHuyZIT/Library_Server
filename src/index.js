@@ -7,20 +7,21 @@ const authRoute = require("./routes/auth");
 const userRoute = require("./routes/users");
 const bookRoute = require("./routes/books");
 const orderRoute = require("./routes/order");
+const session = require("express-session");
 dotenv.config();
 const app = express();
 app.set("trust proxy", 1);
-// app.use(
-//   session({
-//     secret: process.env.SESSION_SECRET || "Super Secret (change it)",
-//     resave: true,
-//     saveUninitialized: false,
-//     cookie: {
-//       sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-//       secure: process.env.NODE_ENV === "production",
-//     },
-//   })
-// );
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET || "Super Secret (change it)",
+    resave: true,
+    saveUninitialized: false,
+    cookie: {
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+      secure: process.env.NODE_ENV === "production",
+    },
+  })
+);
 var corsOptions = {
   origin: "*",
   optionsSuccessStatus: 200,
