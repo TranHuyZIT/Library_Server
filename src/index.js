@@ -9,8 +9,11 @@ const bookRoute = require("./routes/books");
 const orderRoute = require("./routes/order");
 dotenv.config();
 const app = express();
-
-app.use(cors());
+var corsOptions = {
+  origin: "*",
+  optionsSuccessStatus: 200,
+};
+app.use(cors(corsOptions));
 app.use(cookieParser());
 app.use(express.json());
 
@@ -18,11 +21,11 @@ mongoose.connect(process.env.DB_URL, () => {
   console.log("MongoDB Connected");
 });
 // Routes
-app.all("/", function (req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "X-Requested-With");
-  next();
-});
+// app.all("/", function (req, res, next) {
+//   res.header("Access-Control-Allow-Origin", "*");
+//   res.header("Access-Control-Allow-Headers", "X-Requested-With");
+//   next();
+// });
 app.use("/v1/auth", authRoute);
 app.use("/v1/users", userRoute);
 app.use("/v1/books", bookRoute);
