@@ -66,7 +66,7 @@ const AuthController = {
           httpOnly: true,
           secure: false,
           path: "/",
-          sameSite: "strict",
+          sameSite: "none",
         });
         const { pasword, ...others } = user._doc;
         res.status(200).json({ ...others, accessToken });
