@@ -23,10 +23,10 @@ app.use(
   })
 );
 var corsOptions = {
-  origin: [process.env.FRONTEND_APP_URL],
-  credentials: true,
+  origin: "*",
+  optionsSuccessStatus: 200,
 };
-app.use(cors(corsOptions));
+app.use(cors());
 app.use(cookieParser());
 app.use(express.json());
 

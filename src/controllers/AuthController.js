@@ -61,14 +61,14 @@ const AuthController = {
           token: refreshToken,
         });
         await token.save();
-        res.cookie("refreshToken", refreshToken, {
-          httpOnly: true,
-          secure: true,
-          path: "/",
-          sameSite: "none",
-        });
+        // res.cookie("refreshToken", refreshToken, {
+        //   httpOnly: true,
+        //   secure: false,
+        //   path: "/",
+        //   sameSite: "strict",
+        // });
         const { pasword, ...others } = user._doc;
-        return res.status(200).json({ ...others, accessToken });
+        return res.status(200).json({ ...others, accessToken, refreshToken });
       }
     } catch (error) {
       console.log(error);
@@ -76,7 +76,8 @@ const AuthController = {
     }
   },
   requestRefreshToken: (req, res) => {
-    const refreshToken = req.cookies.refreshToken;
+    // const refreshToken = req.cookies.refreshToken;
+    const refreshToken = req.body.refreshToken;
     // const refreshTokens = RefreshToken.find();
     if (!refreshToken) {
       return res.status(401).json("You are not authenticated!");
@@ -90,9 +91,11 @@ const AuthController = {
         // refreshTokens = refreshTokens.filter(
         //   (token) => token !== req.cookies.refreshToken
         // );
-        RefreshToken.findOneAndDelete({
+        console.log(refreshToken);
+        const resdel = await RefreshToken.findOneAndDelete({
           token: refreshToken,
         });
+        console.log(resdel);
         const newAccessToken = AuthController.generateAccessToken(user);
         const newRefreshToken = AuthController.generateRefreshToken(user);
         const token = new RefreshToken({
@@ -100,13 +103,15 @@ const AuthController = {
           token: newRefreshToken,
         });
         await token.save();
-        res.cookie("refreshToken", newRefreshToken, {
-          httpOnly: true,
-          secure: true,
-          path: "/",
-          sameSite: "none",
-        });
-        return res.status(200).json({ accessToken: newAccessToken });
+        // res.cookie("refreshToken", newRefreshToken, {
+        //   httpOnly: true,
+        //   secure: false,
+        //   path: "/",
+        //   sameSite: "strict",
+        // });
+        return res
+          .status(200)
+          .json({ accessToken: newAccessToken, refreshToken: newRefreshToken });
       } catch (error) {
         console.log(error);
         return res.status(500).json(error);
@@ -116,11 +121,13 @@ const AuthController = {
   logoutUser: async (req, res) => {
     res.clearCookie("refreshToken");
     // refreshTokens.filter((token) => token !== req.cookies.refreshToken);
-    const refreshToken = req.cookies.refreshToken;
+    // const refreshToken = req.cookies.refreshToken;
+    const refreshToken = req.body.refreshToken;
+    console.log(refreshToken);
     RefreshToken.findOneAndDelete({
       token: refreshToken,
     });
-    res.status(200).json("Logout succeeded");
+    return res.status(200).json("Logout succeeded");
   },
 };
 
