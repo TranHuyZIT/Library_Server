@@ -4,7 +4,6 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const RefreshToken = require("../models/RefreshToken");
 
-let refreshTokens = [];
 const AuthController = {
   generateAccessToken: (user) => {
     return jwt.sign(
@@ -64,16 +63,16 @@ const AuthController = {
         await token.save();
         res.cookie("refreshToken", refreshToken, {
           httpOnly: true,
-          secure: false,
+          secure: true,
           path: "/",
           sameSite: "none",
         });
         const { pasword, ...others } = user._doc;
-        res.status(200).json({ ...others, accessToken });
+        return res.status(200).json({ ...others, accessToken });
       }
     } catch (error) {
       console.log(error);
-      res.status(500).json(error);
+      return res.status(500).json(error);
     }
   },
   requestRefreshToken: (req, res) => {
@@ -103,9 +102,9 @@ const AuthController = {
         await token.save();
         res.cookie("refreshToken", newRefreshToken, {
           httpOnly: true,
-          secure: false,
+          secure: true,
           path: "/",
-          sameSite: "strict",
+          sameSite: "none",
         });
         return res.status(200).json({ accessToken: newAccessToken });
       } catch (error) {
