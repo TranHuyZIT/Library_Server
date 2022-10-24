@@ -14,7 +14,7 @@ router.put(
   OrderController.completeOrder
 );
 router.get(
-  "/booksfromorder",
+  "/booksfromorder/:id",
   MiddlewaresController.verifyAdmin,
   OrderController.getBooksFromOrderDetails
 );
