@@ -26,6 +26,10 @@ const BookSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    genre: {
+      type: String,
+      required: true,
+    },
   },
   // Store timestamp when users create or update something
   {

@@ -5,6 +5,8 @@ const MiddlewaresController = require("../controllers/MiddlewaresController");
 
 router.get("/", BookController.getAllBooks);
 
+router.get("/genres", BookController.getAllGenres);
+
 router.post(
   "/addbook",
   MiddlewaresController.verifyAdmin,
@@ -16,4 +18,10 @@ router.delete(
   "/deletebook/:id",
   MiddlewaresController.verifyAdmin,
   BookController.deleteBook
+);
+
+router.put(
+  "/updatebook/:id",
+  MiddlewaresController.verifyAdmin,
+  BookController.updateBook
 );

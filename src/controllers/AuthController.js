@@ -91,11 +91,9 @@ const AuthController = {
         // refreshTokens = refreshTokens.filter(
         //   (token) => token !== req.cookies.refreshToken
         // );
-        console.log(refreshToken);
         const resdel = await RefreshToken.findOneAndDelete({
           token: refreshToken,
         });
-        console.log(resdel);
         const newAccessToken = AuthController.generateAccessToken(user);
         const newRefreshToken = AuthController.generateRefreshToken(user);
         const token = new RefreshToken({
@@ -123,7 +121,6 @@ const AuthController = {
     // refreshTokens.filter((token) => token !== req.cookies.refreshToken);
     // const refreshToken = req.cookies.refreshToken;
     const refreshToken = req.body.refreshToken;
-    console.log(refreshToken);
     RefreshToken.findOneAndDelete({
       token: refreshToken,
     });

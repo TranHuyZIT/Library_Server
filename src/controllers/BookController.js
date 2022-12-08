@@ -1,4 +1,5 @@
 const Book = require("../models/Book");
+const BookGenre = require("../models/BookGenre");
 
 const BookController = {
   getAllBooks: async (req, res) => {
@@ -7,6 +8,14 @@ const BookController = {
       return res.status(200).json(books);
     } catch (error) {
       console.log(error);
+      return res.status(500).json(error);
+    }
+  },
+  getAllGenres: async (req, res) => {
+    try {
+      const bookGenres = await BookGenre.find();
+      return res.status(200).json(bookGenres);
+    } catch (error) {
       return res.status(500).json(error);
     }
   },
@@ -19,19 +28,35 @@ const BookController = {
         img: req.body.img,
         price: req.body.price,
         number: req.body.number,
+        genre: req.body.genre,
       });
       const book = await newBook.save();
-      res.status(200).json(book);
+      return res.status(200).json(book);
     } catch (error) {
       console.log(error);
-      res.status(500).json(error);
+      return res.status(500).json(error);
     }
   },
   deleteBook: async (req, res) => {
     try {
       const bookID = req.params.id;
       const book = await Book.findByIdAndDelete(bookID);
-      res.status(200).json(book);
+      return res.status(200).json(book);
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json(error);
+    }
+  },
+  updateBook: async (req, res) => {
+    try {
+      const bookID = req.params.id;
+      const updatedBookInfo = req.body;
+      const updatedBook = await Book.findByIdAndUpdate(
+        bookID,
+        updatedBookInfo,
+        { new: true }
+      );
+      return res.status(200).json(updatedBook);
     } catch (error) {
       console.log(error);
       return res.status(500).json(error);
